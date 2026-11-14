@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>dv mod - chicongdx</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#1a1a1e',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 14s linear infinite',
+                        'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+                        'drip-1': 'drip 2.6s ease-in-out infinite',
+                        'drip-2': 'drip 3.2s ease-in-out infinite 0.7s',
+                        'drip-3': 'drip 2.9s ease-in-out infinite 1.4s',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.75, transform: 'scale(1)' },
+                            '50%': { opacity: 1, transform: 'scale(1.06)' },
+                        },
+                        drip: {
+                            '0%, 100%': { transform: 'translateY(0) scaleY(1)', opacity: 0.5 },
+                            '50%': { transform: 'translateY(6px) scaleY(1.35)', opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1e;
+            color: #ffffff;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Nền chấm bi */
+        .bg-dots {
+            background-color: #1c1c20;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Hiệu ứng màn hình chào (Splash) */
+        .splash-card {
+            background: linear-gradient(180deg, rgba(28, 18, 32, 0.96) 0%, rgba(15, 12, 20, 0.98) 100%);
+            box-shadow: 0 0 50px rgba(225, 29, 72, 0.25), 0 0 100px rgba(147, 51, 234, 0.15), inset 0 1px 0 rgba(255, 100, 150, 0.5);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+        }
+
+        .avatar-halo {
+            background: radial-gradient(circle, rgba(255, 180, 190, 0.35) 0%, rgba(225, 29, 72, 0.2) 45%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(10px);
+        }
+
+        .nsmod-metallic {
+            background: linear-gradient(180deg, #ffffff 0%, #d4d4d8 50%, #71717a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 10px rgba(255, 30, 50, 0.6));
+        }
+
+        .sparkle-star {
+            color: #ffffff;
+            filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffccd5) drop-shadow(0 0 20px #ff2a4b);
+        }
+        
+        .cross-icon {
+            color: #ffffff;
+            filter: drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 16px #ff2a4b);
+        }
+
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(35, 35, 42, 0.6) 0%, rgba(20, 20, 26, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .eq-bar {
+            width: 3px;
+            border-radius: 999px;
+            background: #c084fc;
+            transition: height 0.15s ease;
+        }
+        .eq-playing .eq-bar:nth-child(1) { animation: eqAnim 0.6s ease-in-out infinite alternate; }
+        .eq-playing .eq-bar:nth-child(2) { animation: eqAnim 0.45s ease-in-out infinite alternate 0.15s; }
+        .eq-playing .eq-bar:nth-child(3) { animation: eqAnim 0.7s ease-in-out infinite alternate 0.3s; }
+        .eq-playing .eq-bar:nth-child(4) { animation: eqAnim 0.5s ease-in-out infinite alternate 0.1s; }
+
+        @keyframes eqAnim {
+            0% { height: 3px; opacity: 0.5; }
+            100% { height: 14px; opacity: 1; background: #e879f9; }
+        }
+
+        .sparkline-path {
+            stroke-dasharray: 120;
+            stroke-dashoffset: 120;
+            animation: drawLine 2s ease-out forwards 0.4s;
+        }
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .view-bar {
+            transform-origin: bottom;
+            animation: viewBarPulse 1.8s ease-in-out infinite alternate;
+        }
+        @keyframes viewBarPulse {
+            0% { transform: scaleY(0.75); }
+            100% { transform: scaleY(1.1); }
+        }
+    </style>
+</head>
+<body class="bg-dots min-h-screen flex flex-col items-center justify-start relative selection:bg-rose-500 selection:text-white">
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0d0b12] transition-all duration-500 ease-out">
+        <canvas id="matrix-canvas" class="absolute inset-0 w-full h-full opacity-35 pointer-events-none"></canvas>
+        <div class="absolute inset-0 bg-gradient-to-b from-rose-950/20 via-transparent to-purple-950/35 pointer-events-none"></div>
+
+        <div class="splash-card relative w-full max-w-[340px] rounded-[28px] p-6 pt-8 pb-6 flex flex-col items-center text-center z-10 overflow-hidden">
+            <div class="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-90"></div>
+
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-b from-rose-500/20 to-purple-900/30 border border-rose-500/40 flex items-center justify-center mb-5 shadow-[0_0_30px_rgba(244,63,94,0.35)] animate-pulse-glow">
+                <span class="text-rose-500 text-3xl font-black drop-shadow-[0_0_10px_rgba(244,63,94,0.9)]">+</span>
+            </div>
+
+            <h2 class="text-[24px] font-black tracking-wide text-white leading-tight mb-2">
+                WELCOME TO <span class="text-rose-500 drop-shadow-[0_0_14px_rgba(244,63,94,0.85)]">dv mod</span>
+            </h2>
+
+            <p class="text-[12px] font-medium text-neutral-300 tracking-wide mb-1">
+                KHO LƯU TRỮ MOD VÀ TIỆN ÍCH
+            </p>
+            <p class="text-[12.5px] font-semibold text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.4)] mb-6">
+                Telegram: @leuleucay
+            </p>
+
+            <button id="enter-web-btn" type="button" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#d91c5c] via-[#c026d3] to-[#e11d48] text-white font-extrabold text-sm tracking-wider uppercase flex items-center justify-between shadow-[0_6px_25px_rgba(225,29,72,0.5)] active:scale-95 transition-all cursor-pointer">
+                <span class="text-base font-black">+</span>
+                <span>VÀO WEB NGAY</span>
+                <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-app" class="w-full max-w-[430px] min-h-screen flex flex-col items-center px-4 pt-5 pb-28 relative z-10 opacity-0 scale-95 transition-all duration-700 pointer-events-none">
+
+        <!-- Header -->
+        <header class="w-full flex items-center justify-between mb-5">
+            <div class="glass-panel px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-white/10">
+                <span id="live-clock" class="text-xs font-semibold tracking-wider text-neutral-100 tabular-nums">16:18:51</span>
+                <i class="fa-solid fa-moon text-indigo-400 text-xs"></i>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <button class="w-10 h-10 rounded-xl glass-panel border border-purple-500/40 flex items-center justify-center text-neutral-200 relative">
+                    <i class="fa-regular fa-bell text-sm"></i>
+                    <span class="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_6px_#f43f5e] animate-pulse"></span>
+                </button>
+                <button class="w-10 h-10 rounded-xl glass-panel border border-purple-500/40 flex items-center justify-center text-neutral-200">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Avatar Section -->
+        <section class="flex flex-col items-center text-center w-full mt-2">
+            <div class="relative w-48 h-48 flex items-center justify-center mb-2">
+                <div class="absolute inset-2 rounded-full avatar-halo animate-pulse-glow"></div>
+                
+                <!-- Các ngôi sao 4 cánh quay quanh avatar -->
+                <div class="absolute inset-0 animate-spin-slow pointer-events-none z-0">
+                    <svg class="sparkle-star absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    <svg class="sparkle-star absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    <svg class="sparkle-star absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    <svg class="sparkle-star absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    
+                    <svg class="sparkle-star absolute top-[15%] left-[15%] w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    <svg class="sparkle-star absolute top-[15%] right-[15%] w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    <svg class="sparkle-star absolute bottom-[15%] left-[15%] w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                    <svg class="sparkle-star absolute bottom-[15%] right-[15%] w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/></svg>
+                </div>
+                
+                <div class="w-32 h-32 rounded-full p-[3px] bg-gradient-to-b from-[#e4e4e7] via-[#71717a] to-[#27272a] shadow-[0_0_30px_rgba(255,255,255,0.15)] relative z-10 overflow-hidden">
+                    <!-- Ảnh avatar giống trong hình -->
+                    <img src="https://cdn.upanhlaylink.com/i/f4o024Nk.jpeg" alt="Avatar" class="w-full h-full object-cover rounded-full grayscale-[20%] contrast-125">
+                </div>
+            </div>
+
+            <div class="glass-panel px-5 py-1.5 rounded-full flex items-center gap-2 border border-white/20 shadow-lg -mt-3 mb-4 z-10">
+                <span class="text-[13px] font-bold tracking-wide text-white">chicongdz</span>
+                <i class="fa-solid fa-circle-check text-[#38bdf8] text-sm"></i>
+            </div>
+
+            <!-- Phần dv mod -->
+            <div class="relative flex flex-col items-center my-1">
+                <h1 class="text-[36px] font-black tracking-[0.15em] flex items-center justify-center gap-3">
+                    <!-- Icon cây thánh giá (dùng SVG để không bị lỗi font) -->
+                    <svg class="cross-icon w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H10V9H4V13H10V22H14V13H20V9H14V2Z"/></svg>
+                    <span class="nsmod-metallic">dv mod</span>
+                    <svg class="cross-icon w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H10V9H4V13H10V22H14V13H20V9H14V2Z"/></svg>
+                </h1>
+                <!-- Các giọt máu đỏ -->
+                <div class="flex items-start justify-center gap-[14px] -mt-2 h-6 pointer-events-none ml-1">
+                    <span class="w-[3px] h-2.5 rounded-full bg-gradient-to-b from-rose-500 to-red-800 shadow-[0_0_8px_#f43f5e] animate-drip-1"></span>
+                    <span class="w-[3px] h-3 rounded-full bg-gradient-to-b from-rose-500 to-red-800 shadow-[0_0_10px_#f43f5e] animate-drip-2"></span>
+                    <span class="w-[3px] h-2 rounded-full bg-gradient-to-b from-rose-500 to-red-800 shadow-[0_0_8px_#f43f5e] animate-drip-3"></span>
+                    <span class="w-[3px] h-2.5 rounded-full bg-gradient-to-b from-rose-500 to-red-800 shadow-[0_0_8px_#f43f5e] animate-drip-1" style="animation-delay: 0.4s"></span>
+                    <span class="w-[3px] h-1.5 rounded-full bg-gradient-to-b from-rose-500 to-red-800 shadow-[0_0_8px_#f43f5e] animate-drip-2" style="animation-delay: 0.9s"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nút Tải Game -->
+        <button id="open-games-btn" class="w-full mt-4 py-3 px-4 rounded-[20px] glass-panel border border-white/20 flex items-center justify-center gap-3 text-white font-black text-[15px] tracking-wider uppercase active:scale-[0.98] transition-all cursor-pointer shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+            <svg class="cross-icon w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H10V9H4V13H10V22H14V13H20V9H14V2Z"/></svg>
+            
+            <span class="w-6 h-5 rounded bg-white text-[#2d1635] flex items-center justify-center text-[11px] shadow-sm">
+                <i class="fa-solid fa-gamepad"></i>
+            </span>
+            
+            <span class="mt-0.5">TẢI GAME NGAY</span>
+            
+            <i class="fa-solid fa-arrow-down text-sm text-white ml-1"></i>
+            
+            <svg class="cross-icon w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H10V9H4V13H10V22H14V13H20V9H14V2Z"/></svg>
+        </button>
+
+        <!-- Thống kê -->
+        <section class="w-full grid grid-cols-3 gap-3 mt-4">
+            <!-- Lượt xem -->
+            <div class="glass-panel rounded-[18px] p-3 border border-rose-500/30 relative overflow-hidden flex flex-col justify-between h-[95px]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+                        <i class="fa-regular fa-eye text-sm"></i>
+                    </div>
+                    <div class="text-left">
+                        <div id="stat-views" class="text-[16px] font-black text-white leading-none tracking-tight">5.088</div>
+                        <div class="text-[8px] font-bold text-neutral-400 uppercase tracking-wider mt-1">LƯỢT XEM</div>
+                    </div>
+                </div>
+                <div class="flex items-end justify-end gap-[2px] h-4 mt-1 opacity-90">
+                    <span class="view-bar w-1 h-1.5 bg-rose-600/60 rounded-t-sm"></span>
+                    <span class="view-bar w-1 h-2 bg-rose-600/75 rounded-t-sm" style="animation-delay: 0.2s"></span>
+                    <span class="view-bar w-1 h-2.5 bg-rose-500/85 rounded-t-sm" style="animation-delay: 0.4s"></span>
+                    <span class="view-bar w-1 h-3.5 bg-rose-500 rounded-t-sm" style="animation-delay: 0.6s"></span>
+                    <span class="view-bar w-1 h-4 bg-rose-400 rounded-t-sm" style="animation-delay: 0.8s"></span>
+                </div>
+            </div>
+
+            <!-- Cập nhật -->
+            <div class="glass-panel rounded-[18px] p-3 border border-emerald-500/30 relative overflow-hidden flex flex-col justify-between h-[95px]">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                        <i class="fa-solid fa-arrows-rotate text-sm"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-[16px] font-black text-white leading-none tracking-tight">2.026</div>
+                        <div class="text-[8px] font-bold text-neutral-400 uppercase tracking-wider mt-1">CẬP NHẬT</div>
+                    </div>
+                </div>
+                <div class="w-full h-4 flex justify-end items-end mt-1">
+                    <svg class="w-14 h-3.5 text-emerald-400" viewBox="0 0 60 16" fill="none">
+                        <path class="sparkline-path" d="M2 12 C 12 4, 20 14, 30 7 C 40 1, 48 12, 58 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- iOS -->
+            <div class="glass-panel rounded-[18px] p-3 border border-amber-500/30 relative overflow-hidden flex flex-col justify-between h-[95px]">
+                <i class="fa-solid fa-crown text-amber-400 text-[10px] absolute top-2 right-3"></i>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                        <i class="fa-solid fa-mobile-screen text-sm"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-[16px] font-black text-white leading-none tracking-tight">#1</div>
+                        <div class="text-[8px] font-bold text-neutral-400 uppercase tracking-wider mt-1">IOS</div>
+                    </div>
+                </div>
+                <div class="w-full h-4 flex justify-end items-end mt-1">
+                    <svg class="w-14 h-3.5 text-amber-400" viewBox="0 0 60 16" fill="none">
+                        <path class="sparkline-path" d="M2 13 C 14 11, 22 4, 34 9 C 44 13, 50 4, 58 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social -->
+        <section class="w-full mt-6 flex flex-col items-start gap-2.5">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2d1635] border border-[#7e22ce] text-[10px] font-bold tracking-wider text-purple-300 uppercase">
+                <i class="fa-solid fa-rss text-purple-400 text-xs"></i>
+                <span>ĐĂNG KÝ KÊNH TẠI ĐÂY</span>
+            </div>
+            <div class="w-full grid grid-cols-2 gap-3 mt-1">
+                <a href="https://youtube.com/@chicongdz" target="_blank" class="py-3 rounded-xl bg-gradient-to-r from-[#4a1117] to-[#2d1216] border border-red-500/50 flex items-center justify-center gap-2 text-white font-bold text-[14px]">
+                    <i class="fa-brands fa-youtube text-red-500 text-lg"></i>
+                    <span>Youtube</span>
+                </a>
+                <a href="https://tiktok.com/@chicong.xyz" target="_blank" class="py-3 rounded-xl bg-gradient-to-r from-[#0e1822] to-[#0d121a] border border-cyan-500/50 flex items-center justify-center gap-2 text-white font-bold text-[14px]">
+                    <i class="fa-brands fa-tiktok text-cyan-400 text-base"></i>
+                    <span>TikTok</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="w-full mt-5 flex flex-col items-start gap-2.5">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2d1635] border border-[#7e22ce] text-[10px] font-bold tracking-wider text-purple-300 uppercase">
+                <i class="fa-regular fa-bell text-pink-400 text-xs"></i>
+                <span>NHÓM THÔNG BÁO BẮT BUỘC VÀO</span>
+            </div>
+            <div class="w-full grid grid-cols-2 gap-3 mt-1">
+                <a href="https://t.me/cacnhieuvetxuoc" target="_blank" class="py-3 rounded-xl bg-gradient-to-r from-[#102432] to-[#0c1822] border border-sky-500/50 flex items-center justify-center gap-2 text-white font-bold text-[13px]">
+                    <i class="fa-brands fa-telegram text-sky-400 text-lg"></i>
+                    <span>Kênh Telegram</span>
+                </a>
+                <a href="https://discord.gg/k8hhThxZa" target="_blank" class="py-3 rounded-xl bg-gradient-to-r from-[#18162e] to-[#11101e] border border-indigo-500/50 flex items-center justify-center gap-2 text-white font-bold text-[13px]">
+                    <i class="fa-brands fa-discord text-indigo-400 text-base"></i>
+                    <span>Kênh Discord</span>
+                </a>
+            </div>
+        </section>
+        
+        <!-- Phần tìm kiếm mô phỏng từ web thật -->
+        <section class="w-full mt-6 border-t border-white/10 pt-4 flex flex-col gap-3 pb-8">
+            <div class="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-1">FILE MỚI NHẤT</div>
+            <div class="w-full flex gap-2">
+                <input type="text" placeholder="Tìm kiếm..." class="w-full bg-[#25252b] text-sm px-4 py-2.5 rounded-xl border border-white/5 focus:outline-none focus:border-purple-500/50 text-white placeholder-neutral-500">
+                <button class="bg-[#2d1635] px-4 py-2.5 rounded-xl border border-purple-500/30 text-purple-300 text-xs font-bold whitespace-nowrap"><i class="fa-solid fa-filter mr-1"></i> LỌC</button>
+            </div>
+            <p class="text-[10px] text-neutral-500 italic mt-1">Hỗ trợ tiếng Việt có dấu / không dấu và từ khóa gần đúng</p>
+            
+            <div class="w-full flex justify-center items-center py-10 text-neutral-500 text-sm mt-4">
+                Không tìm thấy kết quả 😢
+            </div>
+        </section>
+    </div>
+
+    <!-- Floating Music Widget -->
+    <div class="fixed bottom-6 right-4 z-40 flex flex-col items-end gap-2">
+        <button class="w-10 h-10 rounded-xl glass-panel border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white cursor-pointer shadow-lg">
+            <i class="fa-solid fa-gear text-base"></i>
+        </button>
+        <div class="glass-panel p-1.5 pl-3 rounded-2xl border border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center gap-3 backdrop-blur-xl">
+            <div class="flex items-center justify-center text-purple-400">
+                <i class="fa-solid fa-music text-[11px]"></i>
+            </div>
+            <div id="visualizer-bars" class="flex items-end gap-[3px] h-4 px-1">
+                <span class="eq-bar h-1"></span>
+                <span class="eq-bar h-1"></span>
+                <span class="eq-bar h-1"></span>
+                <span class="eq-bar h-1"></span>
+            </div>
+            <button id="music-play-btn" class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#a855f7] to-[#d946ef] flex items-center justify-center text-white shadow-md cursor-pointer">
+                <i id="music-play-icon" class="fa-solid fa-play text-xs ml-0.5"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bg-audio" src="https://files.catbox.moe/3xo6og.mp3" loop preload="auto"></audio>
+
+    <script>
+        // 1. Đồng hồ
+        function updateLiveClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('live-clock').textContent = `${h}:${m}:${s}`;
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+
+        // 2. Matrix Rain
+        const matrixCanvas = document.getElementById('matrix-canvas');
+        if (matrixCanvas) {
+            const mCtx = matrixCanvas.getContext('2d');
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            const chars = 'chicongdz+#$%&*';
+            const fontSize = 12;
+            const columns = Math.floor(matrixCanvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+
+            setInterval(() => {
+                mCtx.fillStyle = 'rgba(13, 11, 18, 0.12)';
+                mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                mCtx.font = fontSize + 'px monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    mCtx.fillStyle = i % 3 === 0 ? '#ff2a4b' : '#a855f7';
+                    mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, 45);
+        }
+
+        // 3. View Counter
+        const VIEW_STORAGE_KEY = 'nsmod_realtime_views_v1';
+        let currentViews = parseInt(localStorage.getItem(VIEW_STORAGE_KEY), 10);
+        if (isNaN(currentViews) || currentViews < 5088) currentViews = 5088;
+        currentViews += 1;
+        localStorage.setItem(VIEW_STORAGE_KEY, currentViews);
+        const viewsEl = document.getElementById('stat-views');
+        if (viewsEl) viewsEl.textContent = currentViews.toLocaleString('vi-VN');
+
+        setInterval(() => {
+            currentViews += 1;
+            localStorage.setItem(VIEW_STORAGE_KEY, currentViews);
+            if (viewsEl) {
+                viewsEl.textContent = currentViews.toLocaleString('vi-VN');
+                viewsEl.classList.add('text-rose-400');
+                setTimeout(() => viewsEl.classList.remove('text-rose-400'), 400);
+            }
+        }, 5000);
+
+        // 4. Music Player
+        const bgAudio = document.getElementById('bg-audio');
+        const musicPlayIcon = document.getElementById('music-play-icon');
+        const visualizerBars = document.getElementById('visualizer-bars');
+        let isMusicPlaying = false;
+
+        function updateMusicUI() {
+            if (isMusicPlaying) {
+                musicPlayIcon.className = 'fa-solid fa-pause text-xs';
+                visualizerBars.classList.add('eq-playing');
+            } else {
+                musicPlayIcon.className = 'fa-solid fa-play text-xs ml-0.5';
+                visualizerBars.classList.remove('eq-playing');
+            }
+        }
+
+        function playMusic() {
+            bgAudio.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicUI();
+            }).catch(err => {
+                isMusicPlaying = false;
+                updateMusicUI();
+            });
+        }
+
+        function pauseMusic() {
+            bgAudio.pause();
+            isMusicPlaying = false;
+            updateMusicUI();
+        }
+
+        document.getElementById('music-play-btn').addEventListener('click', () => {
+            isMusicPlaying ? pauseMusic() : playMusic();
+        });
+
+        bgAudio.addEventListener('pause', () => { isMusicPlaying = false; updateMusicUI(); });
+        bgAudio.addEventListener('play', () => { isMusicPlaying = true; updateMusicUI(); });
+
+        // 5. Splash Screen
+        const enterBtn = document.getElementById('enter-web-btn');
+        const splashScreen = document.getElementById('splash-screen');
+        const mainApp = document.getElementById('main-app');
+
+        enterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            splashScreen.style.opacity = '0';
+            splashScreen.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+                mainApp.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+                mainApp.classList.add('opacity-100', 'scale-100');
+                playMusic();
+            }, 450);
+        });
+    </script>
+</body>
+</html>
