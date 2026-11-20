@@ -1,993 +1,133 @@
 <!DOCTYPE html>
-
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>chi cong dz - Bio Link</title>
-<!-- Font chữ và Icon -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&amp;family=JetBrains+Mono:wght@500;600;700;800&amp;family=Nunito:wght@700;800;900&amp;family=Pirata+One&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;family=Quicksand:wght@600;700&amp;family=Space+Grotesk:wght@600;700;800&amp;family=UnifrakturMaguntia&amp;display=swap" rel="stylesheet"/>
-<style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Plus Jakarta Sans", "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>dv mod - chicongdz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#1a1a1e',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 14s linear infinite',
+                        'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+                        'drip-1': 'drip 2.6s ease-in-out infinite',
+                        'drip-2': 'drip 3.2s ease-in-out infinite 0.7s',
+                        'drip-3': 'drip 2.9s ease-in-out infinite 1.4s',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.75, transform: 'scale(1)' },
+                            '50%': { opacity: 1, transform: 'scale(1.06)' },
+                        },
+                        drip: {
+                            '0%, 100%': { transform: 'translateY(0) scaleY(1)', opacity: 0.5 },
+                            '50%': { transform: 'translateY(6px) scaleY(1.35)', opacity: 1 },
+                        }
+                    }
+                }
+            }
         }
-
+    </script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
         body {
-            background:
-                radial-gradient(circle at 50% -5%, rgba(226, 232, 240, 0.15) 0%, transparent 42%),
-                radial-gradient(circle at 12% 20%, rgba(148, 163, 184, 0.09) 0%, transparent 38%),
-                radial-gradient(circle at 88% 40%, rgba(220, 38, 38, 0.08) 0%, transparent 36%),
-                radial-gradient(circle at 18% 70%, rgba(30, 41, 59, 0.5) 0%, transparent 40%),
-                radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.75) 0%, transparent 48%),
-                #050508;
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1e;
             color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px 14px;
-            scroll-behavior: auto;
-            overflow-anchor: none;
-            position: relative;
             overflow-x: hidden;
-            text-rendering: optimizeLegibility;
-        }
-
-        /* Nền Gothic Chrome Hearts Y2K: Tinh thể bạc ánh kim & thánh giá huyền bí (Đồng bộ Ảnh 2) */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.32;
-            background-image:
-                radial-gradient(circle at 50% 50%, rgba(241, 245, 249, 0.22) 1.5px, transparent 1.5px),
-                linear-gradient(45deg, rgba(226, 232, 240, 0.04) 1px, transparent 1px),
-                linear-gradient(-45deg, rgba(220, 38, 38, 0.035) 1px, transparent 1px);
-            background-size: 32px 32px, 32px 32px, 32px 32px;
-            mask-image: radial-gradient(circle at 50% 40%, black 50%, transparent 95%);
-            -webkit-mask-image: radial-gradient(circle at 50% 40%, black 50%, transparent 95%);
-        }
-
-        /* Sương mù bóng tối & hào quang Bạc Lạnh Gothic mờ ảo */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: -20%;
-            z-index: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(circle at 25% 20%, rgba(226, 232, 240, 0.08), transparent 35%),
-                radial-gradient(circle at 75% 35%, rgba(220, 38, 38, 0.12), transparent 38%),
-                radial-gradient(circle at 35% 80%, rgba(148, 163, 184, 0.12), transparent 35%),
-                radial-gradient(circle at 80% 85%, rgba(15, 23, 42, 0.5), transparent 32%);
-            filter: blur(40px);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Top Bar (Clock & Menu) */
-        .top-bar {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .clock-box {
-            background: linear-gradient(135deg, rgba(20, 22, 32, 0.92), rgba(10, 11, 16, 0.96));
-            border: 1.5px solid rgba(226, 232, 240, 0.35);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13.5px;
-            color: #f1f5f9;
-            letter-spacing: 0.8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(226, 232, 240, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-        .clock-box i {
-            color: #e2e8f0;
-            filter: drop-shadow(0 0 6px rgba(226, 232, 240, 0.8));
-            animation: moonSway 3s ease-in-out infinite alternate;
-        }
-        @keyframes moonSway {
-            0% { transform: rotate(-8deg) scale(1); }
-            100% { transform: rotate(12deg) scale(1.12); }
-        }
-
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        /* Khung Avatar chuẩn Thách Đấu Galaxy Candy 3D & Discord Decoration (Ảnh 5) */
-        .conqueror-avatar-wrapper {
-            position: relative;
-            width: 146px;
-            height: 146px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            animation: avatarVampFloat 4.2s ease-in-out infinite;
-        }
-
-        @keyframes avatarVampFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        /* Vòng sóng nhạc chữ thập Gothic Chrome (Đồng bộ Ảnh 2) */
-        .avatar-cross-wave-ring {
-            position: absolute;
-            inset: -14px;
-            border-radius: 58% 42% 38% 62% / 54% 60% 40% 46%;
-            background: radial-gradient(circle, rgba(241, 245, 249, 0.22) 0%, rgba(15, 23, 42, 0.45) 52%, rgba(220, 38, 38, 0.15) 72%, transparent 82%);
-            box-shadow:
-                0 0 30px rgba(226, 232, 240, 0.4),
-                0 0 18px rgba(220, 38, 38, 0.3),
-                inset 0 0 14px rgba(255, 255, 255, 0.4);
-            animation: fluidWaveMorph 7s ease-in-out infinite alternate, waveRotate 18s linear infinite;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        @keyframes fluidWaveMorph {
-            0% { border-radius: 58% 42% 38% 62% / 54% 60% 40% 46%; transform: scale(1) rotate(0deg); }
-            50% { border-radius: 42% 58% 64% 36% / 60% 42% 58% 40%; transform: scale(1.08) rotate(180deg); }
-            100% { border-radius: 58% 42% 38% 62% / 54% 60% 40% 46%; transform: scale(1) rotate(360deg); }
-        }
-
-        @keyframes waveRotate {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Vòng 8 Thánh Giá Gothic Bạc Chrome xoay quanh sóng nhạc */
-        .avatar-cross-orbit {
-            position: absolute;
-            inset: -22px;
-            border-radius: 50%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3Cfilter id='cGlow' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23cGlow)' fill='%23ffffff' stroke='%23cbd5e1' stroke-width='1.2'%3E%3Cg transform='translate(90,12)'%3E%3Cpath d='M-3,-10 L3,-10 L2,-4 L7,-4 L7,1 L2,1 L3,10 L-3,10 L-2,1 L-7,1 L-7,-4 L-2,-4 Z'/%3E%3Ccircle cx='0' cy='-1.5' r='1.8' fill='%23ef4444'/%3E%3C/g%3E%3Cg transform='translate(90,168)'%3E%3Cpath d='M-3,-10 L3,-10 L2,-4 L7,-4 L7,1 L2,1 L3,10 L-3,10 L-2,1 L-7,1 L-7,-4 L-2,-4 Z'/%3E%3Ccircle cx='0' cy='-1.5' r='1.8' fill='%23ef4444'/%3E%3C/g%3E%3Cg transform='translate(12,90) rotate(-90)'%3E%3Cpath d='M-3,-10 L3,-10 L2,-4 L7,-4 L7,1 L2,1 L3,10 L-3,10 L-2,1 L-7,1 L-7,-4 L-2,-4 Z'/%3E%3Ccircle cx='0' cy='-1.5' r='1.8' fill='%23ef4444'/%3E%3C/g%3E%3Cg transform='translate(168,90) rotate(90)'%3E%3Cpath d='M-3,-10 L3,-10 L2,-4 L7,-4 L7,1 L2,1 L3,10 L-3,10 L-2,1 L-7,1 L-7,-4 L-2,-4 Z'/%3E%3Ccircle cx='0' cy='-1.5' r='1.8' fill='%23ef4444'/%3E%3C/g%3E%3Cg transform='translate(35,35) rotate(-45)'%3E%3Cpath d='M-2.5,-8 L2.5,-8 L1.5,-3 L5.5,-3 L5.5,1 L1.5,1 L2.5,8 L-2.5,8 L-1.5,1 L-5.5,1 L-5.5,-3 L-1.5,-3 Z' fill='%23f1f5f9'/%3E%3Ccircle cx='0' cy='-1' r='1.5' fill='%23dc2626'/%3E%3C/g%3E%3Cg transform='translate(145,35) rotate(45)'%3E%3Cpath d='M-2.5,-8 L2.5,-8 L1.5,-3 L5.5,-3 L5.5,1 L1.5,1 L2.5,8 L-2.5,8 L-1.5,1 L-5.5,1 L-5.5,-3 L-1.5,-3 Z' fill='%23f1f5f9'/%3E%3Ccircle cx='0' cy='-1' r='1.5' fill='%23dc2626'/%3E%3C/g%3E%3Cg transform='translate(35,145) rotate(-135)'%3E%3Cpath d='M-2.5,-8 L2.5,-8 L1.5,-3 L5.5,-3 L5.5,1 L1.5,1 L2.5,8 L-2.5,8 L-1.5,1 L-5.5,1 L-5.5,-3 L-1.5,-3 Z' fill='%23f1f5f9'/%3E%3Ccircle cx='0' cy='-1' r='1.5' fill='%23dc2626'/%3E%3C/g%3E%3Cg transform='translate(145,145) rotate(135)'%3E%3Cpath d='M-2.5,-8 L2.5,-8 L1.5,-3 L5.5,-3 L5.5,1 L1.5,1 L2.5,8 L-2.5,8 L-1.5,1 L-5.5,1 L-5.5,-3 L-1.5,-3 Z' fill='%23f1f5f9'/%3E%3Ccircle cx='0' cy='-1' r='1.5' fill='%23dc2626'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
-            animation: crossOrbitRotate 14s linear infinite;
-            z-index: 2;
-            pointer-events: none;
-            filter: drop-shadow(0 0 10px rgba(226, 232, 240, 0.75)) drop-shadow(0 0 6px rgba(220, 38, 38, 0.6));
-        }
-
-        @keyframes crossOrbitRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .avatar-container {
-            width: 114px;
-            height: 114px;
-            border-radius: 50%;
-            border: 3.5px solid #cbd5e1;
-            overflow: hidden;
-            background: #09090c;
-            position: relative;
-            z-index: 3;
-            box-shadow:
-                0 8px 24px rgba(0, 0, 0, 0.85),
-                0 0 20px rgba(226, 232, 240, 0.45),
-                0 0 10px rgba(220, 38, 38, 0.35),
-                inset 0 0 14px rgba(0, 0, 0, 0.9);
-        }
-
-        .avatar-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .conqueror-avatar-wrapper:hover img {
-            transform: none;
-        }
-
-
-        .badge-user {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(18, 20, 28, 0.92) 50%, rgba(8, 9, 14, 0.98) 100%);
-            border: 1.5px solid rgba(226, 232, 240, 0.4);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), inset 0 1.5px 0 rgba(255, 255, 255, 0.3);
-            padding: 7px 22px;
-            border-radius: 24px;
-            font-size: 13.5px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0.5px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            animation: cuteBob 4s ease-in-out infinite 0.5s;
-        }
-
-        @keyframes cuteBob {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        .badge-user .fa-circle-check {
-            color: #38bdf8;
-            font-size: 14.5px;
-            filter: drop-shadow(0 0 8px #38bdf8);
-            animation: tickPop 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes tickPop {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.18); }
-        }
-
-        /* TIÊU ĐỀ "NS MOD" — ĐẲNG CẤP CHROME HEARTS GOTHIC (ẢNH 4) + HIỆU ỨNG MÁU VAMP */
-        .name-box.chrome-hearts-title {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-family: 'UnifrakturMaguntia', 'Pirata One', 'MedievalSharp', serif !important;
-            font-size: 38px !important;
-            font-weight: 900 !important;
-            letter-spacing: 5px !important;
-            margin-bottom: 22px !important;
-            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 30%, #64748b 48%, #0f111a 50%, #475569 52%, #e2e8f0 82%, #ffffff 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            filter: drop-shadow(0 2px 0 #000) drop-shadow(0 0 16px rgba(220, 38, 38, 0.85)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.95)) !important;
-            user-select: none;
-            padding: 0 10px 10px;
-        }
-
-        .ch-cross {
-            font-size: 26px !important;
-            color: #e2e8f0 !important;
-            filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.9)) drop-shadow(0 0 12px rgba(226, 232, 240, 0.6));
-            animation: chCrossPulse 2.8s ease-in-out infinite alternate;
-            -webkit-text-fill-color: #f8fafc !important;
-        }
-        @keyframes chCrossPulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 6px #dc2626); }
-            100% { transform: scale(1.15) rotate(4deg); filter: drop-shadow(0 0 14px #ef4444) drop-shadow(0 0 20px #e2e8f0); }
-        }
-
-        /* Giọt máu Vampire rỉ xuống từ chữ NS MOD */
-        .blood-drips-container {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -2px;
-            height: 16px;
-            pointer-events: none;
-        }
-        .blood-drop {
-            position: absolute;
-            width: 5.5px;
-            height: 9px;
-            background: linear-gradient(180deg, #991b1b, #ef4444);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            box-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 2px 4px rgba(0,0,0,0.6);
-            animation: bloodDrip 3.2s ease-in infinite;
-        }
-        .blood-drop.b1 { left: 24%; animation-delay: 0s; height: 11px; }
-        .blood-drop.b2 { left: 42%; animation-delay: 1.1s; height: 8px; }
-        .blood-drop.b3 { left: 58%; animation-delay: 0.5s; height: 13px; }
-        .blood-drop.b4 { left: 74%; animation-delay: 1.8s; height: 10px; }
-        .blood-drop.b5 { left: 86%; animation-delay: 2.3s; height: 7px; }
-
-        @keyframes bloodDrip {
-            0% { transform: translateY(0) scaleY(1); opacity: 0.9; }
-            60% { transform: translateY(4px) scaleY(1.4); opacity: 1; }
-            85% { transform: translateY(12px) scaleY(1.7); opacity: 0.8; }
-            100% { transform: translateY(18px) scaleY(0.4); opacity: 0; }
-        }
-
-        /* KHUNG NÚT TẢI GAME GOTHIC CHROME HEARTS (ĐÃ BỎ RẮN - ĐỒNG BỘ ẢNH 2) */
-        .giant-serpent-wrapper {
-            position: relative;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 14px 0 22px;
-        }
-
-        /* Nút Tải Game: HẮC KIM BẠC GOTHIC CHROME HEARTS ĐẲNG CẤP VIP */
-        .get-key-highlight-btn {
-            position: relative;
-            width: 100%;
-            background: linear-gradient(135deg, rgba(22, 25, 36, 0.96) 0%, rgba(9, 10, 15, 0.98) 50%, rgba(26, 29, 40, 0.96) 100%) !important;
-            color: #ffffff !important;
-            border: 1.8px solid rgba(226, 232, 240, 0.7) !important;
-            padding: 16px 24px;
-            border-radius: 22px;
-            font-family: 'UnifrakturMaguntia', 'Pirata One', 'Space Grotesk', sans-serif !important;
-            font-size: 19px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            cursor: pointer;
-            box-shadow:
-                0 12px 32px rgba(0, 0, 0, 0.8),
-                0 0 24px rgba(226, 232, 240, 0.25),
-                0 0 14px rgba(220, 38, 38, 0.22),
-                inset 0 1.5px 0 rgba(255, 255, 255, 0.6),
-                inset 0 -1.5px 0 rgba(0, 0, 0, 0.8) !important;
-            text-decoration: none;
-            z-index: 2;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .get-key-highlight-btn:hover {
-            border-color: #ffffff !important;
-            box-shadow:
-                0 16px 40px rgba(0, 0, 0, 0.9),
-                0 0 32px rgba(226, 232, 240, 0.55),
-                0 0 18px rgba(239, 68, 68, 0.45),
-                inset 0 2px 0 #ffffff !important;
-        }
-
-        .get-key-highlight-btn:active {
-            opacity: 0.92;
-        }
-
-        .get-key-highlight-btn span {
-            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 45%, #94a3b8 70%, #f8fafc 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
-            position: relative;
-            z-index: 2;
-        }
-
-        .get-key-highlight-btn .btn-cross {
-            font-size: 20px;
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-            filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.9)) drop-shadow(0 0 12px rgba(220, 38, 38, 0.6));
-        }
-
-        .get-key-highlight-btn i {
-            color: #e2e8f0 !important;
-            font-size: 18px;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.7));
-        }
-
-        .get-key-highlight-btn i.fa-gamepad {
-            transform: none;
-        }
-
-        .get-key-highlight-btn:active {
-            transform: scale(0.96);
-        }
-
-        /* Stats Box */
-        .stats-box {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-around;
-            padding: 18px 0;
-            margin-bottom: 25px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #9ca3af;
-        }
-
-        /* ================= 3D CANDY SOCIAL ROW ================= */
-        .social-row {
-            width: 100%;
-            display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .social-btn {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(145deg, rgba(24, 20, 48, 0.85), rgba(13, 14, 28, 0.95));
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            padding: 12px 10px;
-            border-radius: 16px;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: 'Nunito', 'Quicksand', sans-serif;
-            font-size: 13.5px;
-            font-weight: 800;
-            letter-spacing: 0.2px;
-            box-shadow:
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1.5px 0 rgba(255, 255, 255, 0.15),
-                inset 0 -2px 0 rgba(0, 0, 0, 0.3);
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .social-btn:active {
-            transform: scale(0.96);
-        }
-
-        /* TIKTOK — Cyber neon pop */
-        .social-btn.tiktok-vip {
-            background: linear-gradient(145deg, rgba(16, 20, 36, 0.95), rgba(7, 10, 22, 0.98));
-            border: 1px solid rgba(34, 211, 238, 0.45);
-            box-shadow:
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
-        }
-
-        .social-btn.tiktok-vip i {
-            color: #22d3ee;
-            font-size: 15px;
-            filter: drop-shadow(-1.5px -1px 0 rgba(236, 72, 153, 0.8)) drop-shadow(1.5px 1px 0 rgba(34, 211, 238, 0.8));
-        }
-
-        /* DISCORD — Lavender blurple candy */
-        .social-btn.discord-vip {
-            background: linear-gradient(145deg, rgba(88, 101, 242, 0.28), rgba(22, 20, 48, 0.95));
-            border: 1px solid rgba(129, 140, 248, 0.5);
-            box-shadow:
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
-        }
-
-        .social-btn.discord-vip i {
-            color: #a5b4fc;
-            font-size: 15px;
-            filter: drop-shadow(0 0 6px rgba(129, 140, 248, 0.7));
-        }
-
-        /* TELEGRAM — Cyber sky blue pop */
-        .social-btn.telegram-vip {
-            background: linear-gradient(145deg, rgba(14, 165, 233, 0.25), rgba(15, 23, 42, 0.95));
-            border: 1px solid rgba(56, 189, 248, 0.5);
-            box-shadow:
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1.5px 0 rgba(255, 255, 255, 0.22);
-        }
-
-        .social-btn.telegram-vip i {
-            color: #38bdf8;
-            font-size: 15px;
-            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.7));
-        }
-
-        /* YOUTUBE — Iconic Scarlet Red Pop */
-        .social-btn.youtube-vip {
-            background: linear-gradient(145deg, rgba(220, 38, 38, 0.42), rgba(35, 10, 16, 0.98));
-            border: 1.5px solid rgba(239, 68, 68, 0.7);
-            box-shadow:
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1.5px 0 rgba(255, 255, 255, 0.25);
-        }
-
-        .social-btn.youtube-vip i {
-            color: #ff0000;
-            font-size: 15px;
-            filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.85));
-        }
-
-        /* Section Titles */
-        .section-tag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #60a5fa;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            align-self: flex-start;
-            margin: 25px 0 12px 0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .section-heading {
-            align-self: flex-start;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        /* Wrapper for sections that contain searchable files.
-           Gets .search-item-hidden applied to it when a search
-           term matches nothing inside it, so the heading/tag
-           hides along with its (empty) card list. */
-        .searchable-section {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        /* Link Cards */
-        .link-card {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 16px;
-            border-radius: 16px;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .link-card:hover {
-            background: rgba(255, 255, 255, 0.09);
-        }
-
-        .link-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .link-icon, .link-thumb {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .bg-blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
-
-        .link-info h3 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-
-        .link-info p {
-            font-size: 12px;
-            color: #9ca3af;
-        }
-
-        .link-action {
-            color: #9ca3af;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        /* Game Mod / Item Card đặc biệt */
-        .mod-card {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 14px;
-            border-radius: 16px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-
-        .mod-card:hover {
-            background: rgba(255, 255, 255, 0.09);
-        }
-
-        .mod-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .mod-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .mod-details h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .mod-details p {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-bottom: 6px;
-        }
-
-        .tags-row {
-            display: flex;
-            gap: 5px;
-        }
-
-        .mini-tag {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            color: #d1d5db;
-        }
-
-        .download-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(59, 130, 246, 0.2);
-            color: #3b82f6;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        /* Custom Modal thông báo chung */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s ease;
-        }
-
-        .modal-overlay.active,
-        .modal-overlay.leaving {
-            display: flex !important;
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-box {
-            background: #181920;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            width: 90%;
-            max-width: 360px;
-            padding: 24px;
-            border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            transform: scale(0.8);
-            transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .modal-overlay.active .modal-box {
-            transform: scale(1);
-        }
-
-        .modal-box h3 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #fff;
-        }
-
-        .modal-box p {
-            font-size: 13px;
-            color: #9ca3af;
-            margin-bottom: 20px;
-            word-break: break-all;
-            line-height: 1.5;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            transition: 0.2s;
-        }
-
-        .modal-btn.cancel {
-            background: rgba(255, 255, 255, 0.08);
-            color: #d1d5db;
-        }
-        .modal-btn.cancel:hover { background: rgba(255, 255, 255, 0.12); }
-
-        .modal-btn.confirm {
-            background: linear-gradient(135deg, #f3f63b, #7163f1, #048399);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(146, 59, 246, 0.4);
-        }
-        .modal-btn.confirm:hover { opacity: 0.9; }
-
-        /* Hiệu ứng cho Popup Chào Mừng Siêu Sáng & Nổi Bật */
-        .welcome-modal-box {
-            position: relative;
-            overflow: hidden;
-            background:
-                radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16), transparent 42%),
-                linear-gradient(145deg, rgba(10, 13, 24, 0.98), rgba(16, 18, 31, 0.98));
-            border: 1px solid rgba(168, 85, 247, 0.65);
-            box-shadow:
-                0 0 0 1px rgba(6, 182, 212, 0.08),
-                0 25px 80px rgba(0,0,0,.72),
-                0 0 45px rgba(124, 58, 237, 0.22),
-                inset 0 1px 0 rgba(255,255,255,.08);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-        }
-
-        .welcome-modal-box::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #22d3ee, #a855f7, transparent);
-            box-shadow: 0 0 18px rgba(34,211,238,.55);
-        }
-
-        .welcome-modal-box::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            opacity: .18;
-            background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+        /* Nền chấm bi */
+        .bg-dots {
+            background-color: #1c1c20;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
             background-size: 24px 24px;
-            mask-image: linear-gradient(to bottom, black, transparent 75%);
-            -webkit-mask-image: linear-gradient(to bottom, black, transparent 75%);
         }
 
-        .welcome-modal-box > * {
-            position: relative;
-            z-index: 1;
+        /* Hiệu ứng màn hình chào (Splash) */
+        .splash-card {
+            background: linear-gradient(180deg, rgba(28, 18, 32, 0.96) 0%, rgba(15, 12, 20, 0.98) 100%);
+            box-shadow: 0 0 50px rgba(225, 29, 72, 0.25), 0 0 100px rgba(147, 51, 234, 0.15), inset 0 1px 0 rgba(255, 100, 150, 0.5);
+            border: 1px solid rgba(244, 63, 94, 0.35);
         }
 
-        .glowing-welcome-text {
-            font-size: 16px;
-            font-weight: 800;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #a75efa, #dbceeb, #d549ff, #a65dfa);
-            background-size: 300% 300%;
+        .avatar-halo {
+            background: radial-gradient(circle, rgba(255, 180, 190, 0.35) 0%, rgba(225, 29, 72, 0.2) 45%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(10px);
+        }
+
+        .nsmod-metallic {
+            background: linear-gradient(180deg, #ffffff 0%, #d4d4d8 50%, #71717a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: textGlowAnim 3s ease infinite alternate;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            filter: drop-shadow(0 2px 10px rgba(255, 30, 50, 0.6));
         }
 
-        @keyframes textGlowAnim {
-            0% { background-position: 0% 50%; filter: drop-shadow(0 0 2px rgba(101, 11, 245, 0.5)); }
-            100% { background-position: 100% 50%; filter: drop-shadow(0 0 8px rgba(146, 56, 248, 0.8)); }
+        .sparkle-star {
+            color: #ffffff;
+            filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px #ffccd5) drop-shadow(0 0 20px #ff2a4b);
+        }
+        
+        .cross-icon {
+            color: #ffffff;
+            filter: drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 16px #ff2a4b);
         }
 
-        .welcome-icon-badge {
-            width: 60px;
-            height: 60px;
-            background: rgba(241, 240, 237, 0.15);
-            border: 2px solid rgba(185, 127, 212, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            color: #67e8f9;
-            margin: 0 auto 15px auto;
-            animation: iconPulse 2s infinite alternate;
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(35, 35, 42, 0.6) 0%, rgba(20, 20, 26, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
-        @keyframes iconPulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
-            100% { transform: scale(1.08); box-shadow: 0 0 15px rgba(54, 1, 124, 0.6); }
-        }
-
-        .welcome-modal-box .modal-btn.confirm {
-            background: linear-gradient(135deg, #7c3aed, #2563eb 55%, #0891b2);
-            border: 1px solid rgba(255,255,255,.14);
-            box-shadow: 0 0 22px rgba(124,58,237,.28), inset 0 1px 0 rgba(255,255,255,.15);
-            letter-spacing: .5px;
-        }
-
-        .welcome-modal-box .modal-btn.confirm:hover {
-            transform: none;
-            box-shadow: 0 0 30px rgba(34,211,238,.25), 0 8px 25px rgba(0,0,0,.35);
-        }
-
-        /* ================= PREMIUM CATEGORY NAV (CYBER PURPLE) ================= */
-        .category-slider {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            margin: 2px 0 16px;
-            padding: 8px;
-            border: 1px solid rgba(168,85,247,.36);
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(28, 20, 56, 0.84), rgba(12, 14, 30, 0.94));
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,.09),
-                0 14px 38px rgba(0,0,0,.35),
-                0 0 28px rgba(147,51,234,.16);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            overflow: hidden;
-        }
-
-        /* Hiệu ứng category slider tĩnh nhẹ nhàng, không tốn GPU */
-        .category-slider::after {
-            display: none;
-        }
-
-        .category-slider::before {
-            content: '↔';
-            position: absolute;
-            right: 14px;
-            bottom: 2px;
-            z-index: 5;
-            pointer-events: none;
-            color: rgba(192,132,252,.5);
-            font-size: 10px;
-            letter-spacing: 2px;
-            opacity: .6;
-        }
-
-        .quick-tabs {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex: 1;
-            min-width: 0;
-            overflow-x: auto;
-            padding: 1px 2px;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .quick-tabs::-webkit-scrollbar { display: none; }
-
-        .quick-tabs {
-            cursor: grab;
-            touch-action: pan-x;
-            user-select: none;
-        }
-
-        .quick-tabs.is-dragging {
-            cursor: grabbing;
-            scroll-behavior: auto;
-        }
-
-        .tab-pill {
-            position: relative;
-            flex: 0 0 auto;
-            white-space: nowrap;
-            padding: 10px 15px;
-            border-radius: 14px;
-            border: 1px solid rgba(226,232,240,.18);
-            background: rgba(255,255,255,.025);
-            color: #cbd5e1;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .4px;
-            cursor: pointer;
-            transition: border-color .2s ease, background .2s ease;
-        }
-
-        .tab-pill:hover {
-            color: #fff;
-            transform: none;
-            border-color: rgba(226,232,240,.55);
-            background: linear-gradient(135deg, rgba(226,232,240,.12), rgba(15,23,42,.45));
-        }
-
-        .tab-pill.active {
-            color: #050508 !important;
-            border-color: #ffffff;
-            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 45%, #cbd5e1 75%, #94a3b8 100%);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,.4),
-                0 8px 25px rgba(226,232,240,.35),
-                inset 0 1px 0 rgba(255,255,255,.8);
-        }
-
-        .tab-pill.active::after {
-            content: '';
-            position: absolute;
-            left: 18%;
-            right: 18%;
-            bottom: -1px;
-            height: 2px;
+        .eq-bar {
+            width: 3px;
             border-radius: 999px;
-            background: linear-gradient(90deg, transparent, #ffffff, #cbd5e1, transparent);
-            box-shadow: 0 0 8px rgba(255,255,255,.9);
-            opacity: .95;
+            background: #c084fc;
+            transition: height 0.15s ease;
         }
-     
-    
+        .eq-playing .eq-bar:nth-child(1) { animation: eqAnim 0.6s ease-in-out infinite alternate; }
+        .eq-playing .eq-bar:nth-child(2) { animation: eqAnim 0.45s ease-in-out infinite alternate 0.15s; }
+        .eq-playing .eq-bar:nth-child(3) { animation: eqAnim 0.7s ease-in-out infinite alternate 0.3s; }
+        .eq-playing .eq-bar:nth-child(4) { animation: eqAnim 0.5s ease-in-out infinite alternate 0.1s; }
 
-</style>
+        @keyframes eqAnim {
+            0% { height: 3px; opacity: 0.5; }
+            100% { height: 14px; opacity: 1; background: #e879f9; }
+        }
 
+        .sparkline-path {
+            stroke-dasharray: 120;
+            stroke-dashoffset: 120;
+            animation: drawLine 2s ease-out forwards 0.4s;
+        }
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
 
-
+        .view-bar {
+            transform-origin: bottom;
+            animation: viewBarPulse 1.8s ease-in-out infinite alternate;
+        }
+        @keyframes viewBarPulse {
+            0% { transform: scaleY(0.75); }
+            100% { transform: scaleY(1.1); }
+        }
+    </style>
 </head>
-</style>
 <body class="bg-dots min-h-screen flex flex-col items-center justify-start relative selection:bg-rose-500 selection:text-white">
 
     <!-- SPLASH SCREEN -->
